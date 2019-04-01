@@ -1,0 +1,11 @@
+{
+  "body": "{\"content\":\"new sku\",\"attachment\":\"newSku.jpg\"}",
+  "pathParameters": {
+    "id": "e68beb10-5371-11e9-afdb-dfa44d6cc188"
+  },
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "avinash.gosi"
+    }
+  }
+}

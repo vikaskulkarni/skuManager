@@ -1,0 +1,9 @@
+{
+    "body": "{\"content\":\"sample sku\",\"attachment\":\"sku.jpg\"}",
+    "requestContext": {
+      "identity": {
+        "cognitoIdentityId": "avinash.gosi"
+      }
+    }
+  }
+  

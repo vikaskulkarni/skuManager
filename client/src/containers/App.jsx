@@ -1,58 +1,82 @@
-import React, { Component } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { ThemeProvider } from '@zendeskgarden/react-theming';
-import { Tabs, TabPanel } from '@zendeskgarden/react-tabs';
-import GlobalHeader from '../components/header/GlobalHeader';
-import GlobalFooter from '../components/footer/GlobalFooter';
-import ClientAPIService from '../service/ClientAPIService';
-import menuItems from './menuItems';
-import tabItems from './tabItems';
-import './App.scss';
-import '@zendeskgarden/react-tabs/dist/styles.css';
+import React, { Component, Fragment } from "react";
+import { Auth } from "aws-amplify";
+import { Link, withRouter } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
+import { Nav, Navbar, NavItem } from "react-bootstrap";
+import Routes from "../Routes";
+import "./App.scss";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      menu: menuItems
-    };
-    this._clientAPIService = new ClientAPIService();
-    this._skuManagerURL = '/api/profileDetails/';
-  }
-  Í
-  componentWillMount() {
-    this.getDataFromServer();
-  }
+    constructor(props) {
+        super(props);
 
-  getDataFromServer = (id) => {
-    const successCB = (responseData) => {
-      this.setState({
+        this.state = {
+            isAuthenticated: false,
+            isAuthenticating: true
+        };
+    }
 
-      });
-    };
+    async componentDidMount() {
+        try {
+            await Auth.currentSession();
+            this.userHasAuthenticated(true);
+        }
+        catch (e) {
+            if (e !== 'No current user') {
+                alert(e);
+            }
+        }
 
-    const errorCB = (error) => {
-      toast.error('Operation Failed!', {
-        autoClose: false
-      });
-    };
+        this.setState({ isAuthenticating: false });
+    }
 
-    this._clientAPIService.setUrl(this._skuManagerURL).doGetCall(successCB, errorCB);
-  };
+    userHasAuthenticated = authenticated => {
+        this.setState({ isAuthenticated: authenticated });
+    }
 
-  render() {
-    return (
-      <ThemeProvider>
-        <Tabs vertical>
-          {tabItems.map(tab => (
-            <TabPanel label={tab.label} key={tab.key}>
-              {tab.value}
-            </TabPanel>
-          ))}
-        </Tabs>
-      </ThemeProvider>
-    );
-  }
+    handleLogout = async event => {
+        await Auth.signOut();
+
+        this.userHasAuthenticated(false);
+        this.props.history.push("/login");
+    }
+
+    render() {
+        const childProps = {
+            isAuthenticated: this.state.isAuthenticated,
+            userHasAuthenticated: this.userHasAuthenticated
+        };
+
+        return (
+            !this.state.isAuthenticating &&
+            <div className="App">
+                <Navbar fluid collapseOnSelect>
+                    <Navbar.Header>
+                        <Navbar.Brand>
+                            <Link to="/">Scratch</Link>
+                        </Navbar.Brand>
+                        <Navbar.Toggle />
+                    </Navbar.Header>
+                    <Navbar.Collapse>
+                        <Nav pullRight>
+                            {this.state.isAuthenticated
+                                ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                                : <Fragment>
+                                    <LinkContainer to="/signup">
+                                        <NavItem>Signup</NavItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/login">
+                                        <NavItem>Login</NavItem>
+                                    </LinkContainer>
+                                </Fragment>
+                            }
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
+                <Routes childProps={childProps} />
+            </div>
+        );
+    }
 }
-module.exports = App;
+
+export default withRouter(App);
