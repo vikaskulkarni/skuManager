@@ -1,0 +1,16 @@
+.save_btn {
+  color: #fff !important;
+  text-transform: uppercase;
+  background: #60a3bc;
+  padding: 6px;
+  border-radius: 6px;
+  display: inline-block;
+  border: none;
+}
+
+.save_btn:hover {
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, 1);
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  transition: all 0.4s ease 0s;
+}

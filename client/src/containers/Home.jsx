@@ -1,24 +1,32 @@
 import React, { Component } from "react";
+import { API } from "aws-amplify";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import ExpandRow from "../components/ExpandRow";
 import "./Home.scss";
 
 export default class Home extends Component {
 
-    priceFormatter = (cell, row) => {
-        return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
+    async componentDidMount() {
+        if (!this.props.isAuthenticated) {
+            return;
+        }
+
+        try {
+            const skus = await this.skus();
+            this.setState({ skus });
+        } catch (e) {
+            alert(e);
+        }
+
+        this.setState({ isLoading: false });
     }
 
+    skus() {
+        return API.get("skus", "/skus");
+    }
+
+
     render() {
-        const products = [{
-            id: 1,
-            name: "Item name 1",
-            price: 100
-        }, {
-            id: 2,
-            name: "Item name 2",
-            price: 100
-        }];
         return (
             <div className="Home">
                 <div className="lander">

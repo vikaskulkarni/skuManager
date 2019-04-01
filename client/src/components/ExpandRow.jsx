@@ -1,74 +1,54 @@
 import React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import BSTable from './BSTable';
+import './ExpandRow.scss';
+import patientItems from './patientItems';
 
 export default class ExpandRow extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    isExpandableRow = (row) => {
-        if (row.id < 3) return true;
-        else return false;
+    onClickProductSelected = (cell, row) => {
+        console.log('Product #');
     }
 
-    expandComponent = (row) => {
-        return (
-            <BSTable data={row.expand} />
-        );
+    buttonFormatter = (cell, row, rowIndex) => (
+        <div className="button_cont"><a className="save_btn" href="add-website-here" target="_blank" rel="nofollow noopener">Save</a></div>
+    )
+
+    rowStyleFormat = (row, rowIdx) => {
+        return { backgroundColor: rowIdx % 2 === 0 ? '#f2f2f2' : '#ffffff' };
     }
 
     render() {
-        const products = [];
-
-        function addProducts(quantity) {
-            const startId = products.length;
-            for (let i = 0; i < quantity; i++) {
-                const id = startId + i;
-                if (i < 3) {
-                    products.push({
-                        id: id,
-                        name: 'Item name ' + id,
-                        price: 2100 + i,
-                        expand: [{
-                            fieldA: 'test1',
-                            fieldB: (i + 1) * 99,
-                            fieldC: (i + 1) * Math.random() * 100,
-                            fieldD: '123eedd' + i
-                        }, {
-                            fieldA: 'test2',
-                            fieldB: i * 99,
-                            fieldC: i * Math.random() * 100,
-                            fieldD: '123eedd' + i
-                        }]
-                    });
-                } else {
-                    products.push({
-                        id: id,
-                        name: 'Item name ' + id,
-                        price: 2100 + i
-                    });
-                }
+        const patients = [];
+        function addProducts() {
+            for (let patient in patientItems) {
+                patients.push({
+                    id: patientItems[patient].patientId,
+                    name: patientItems[patient].patientName,
+                    age: patientItems[patient].patientAge,
+                    place: patientItems[patient].patientPlace
+                });
             }
         }
-        addProducts(5);
+        addProducts();
 
-        const options = {
-            expandRowBgColor: 'rgb(242, 255, 163)'
-        };
         const cellEdit = {
-            mode: 'click'
+            mode: 'dbclick'
         };
+
         return (
-            <BootstrapTable data={products}
-                options={options}
-                expandableRow={this.isExpandableRow}
-                expandComponent={this.expandComponent}
-                cellEdit={cellEdit}>
-                <TableHeaderColumn dataField='id' isKey={true}>Product ID</TableHeaderColumn>
-                <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>
-                <TableHeaderColumn dataField='price'>Product Price</TableHeaderColumn>
-            </BootstrapTable>
+            <div>
+                <BootstrapTable data={patients} cellEdit={cellEdit} trStyle={this.rowStyleFormat}>
+                    <TableHeaderColumn dataField='id' isKey={true} dataSort={true}>Patient ID</TableHeaderColumn>
+                    <TableHeaderColumn dataField='name' dataSort={true}>Patient Name</TableHeaderColumn>
+                    <TableHeaderColumn dataField='age' dataSort={true} Í>Age</TableHeaderColumn>
+                    <TableHeaderColumn dataField='place'>Place</TableHeaderColumn>
+                    <TableHeaderColumn dataField='button' dataFormat={this.buttonFormatter}>Actions</TableHeaderColumn>
+                </BootstrapTable>
+            </div>
         );
     }
 }
