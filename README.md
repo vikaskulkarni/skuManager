@@ -1,5 +1,5 @@
-# Sku Manager
-Portal to manage SKUs
+# Patient Manager
+Portal to manage Patients
 
 Libraries used:
 React, Webpack, SASS

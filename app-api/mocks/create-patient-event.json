@@ -1,0 +1,8 @@
+{
+  "body": "{\"patientName\":\"ABC\",\"patientAge\":\"30\",\"patientPlace\":\"Bengaluru\"}",
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "avinash.gosi"
+    }
+  }
+}

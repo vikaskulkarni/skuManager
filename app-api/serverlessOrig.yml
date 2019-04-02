@@ -34,60 +34,60 @@ provider:
 
 functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
-  # - path: url path is /patients
+  # - path: url path is /skus
   # - method: POST request
   # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
   #     domain api call
   # - authorizer: authenticate using the AWS IAM role
   create:
-    handler: createPatient.main
+    handler: create.main
     events:
       - http:
-          path: patients
+          path: skus
           method: post
           cors: true
           authorizer: aws_iam
   get:
     # Defines an HTTP API endpoint that calls the main function in get.js
-    # - path: url path is /patients/{id}
+    # - path: url path is /skus/{id}
     # - method: GET request
-    handler: getPatient.main
+    handler: get.main
     events:
       - http:
-          path: patients/{id}
+          path: skus/{id}
           method: get
           cors: true
           authorizer: aws_iam
   list:
     # Defines an HTTP API endpoint that calls the main function in list.js
-    # - path: url path is /patients
+    # - path: url path is /skus
     # - method: GET request
-    handler: listPatients.main
+    handler: list.main
     events:
       - http:
-          path: patients
+          path: skus
           method: get
           cors: true
           authorizer: aws_iam
   update:
     # Defines an HTTP API endpoint that calls the main function in update.js
-    # - path: url path is /patients/{id}
+    # - path: url path is /skus/{id}
     # - method: PUT request
-    handler: updatePatient.main
+    handler: update.main
     events:
       - http:
-          path: patients/{id}
+          path: skus/{id}
           method: put
           cors: true
           authorizer: aws_iam
   delete:
     # Defines an HTTP API endpoint that calls the main function in delete.js
-    # - path: url path is /patients/{id}
+    # - path: url path is /skus/{id}
     # - method: DELETE request
-    handler: deletePatient.main
+    handler: delete.main
     events:
       - http:
-          path: patients/{id}
+          path: skus/{id}
           method: delete
           cors: true
           authorizer: aws_iam

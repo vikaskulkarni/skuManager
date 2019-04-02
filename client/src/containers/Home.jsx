@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import { API } from "aws-amplify";
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import ExpandRow from "../components/ExpandRow";
 import "./Home.scss";
 
 export default class Home extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { patients: [] }
+    }
 
     async componentDidMount() {
         if (!this.props.isAuthenticated) {
@@ -12,8 +16,8 @@ export default class Home extends Component {
         }
 
         try {
-            const skus = await this.skus();
-            this.setState({ skus });
+            const patients = await this.patients();
+            this.setState({ patients });
         } catch (e) {
             alert(e);
         }
@@ -21,8 +25,8 @@ export default class Home extends Component {
         this.setState({ isLoading: false });
     }
 
-    skus() {
-        return API.get("skus", "/skus");
+    patients() {
+        return API.get("patients", "/patients");
     }
 
 
@@ -30,7 +34,7 @@ export default class Home extends Component {
         return (
             <div className="Home">
                 <div className="lander">
-                    <ExpandRow />
+                    <ExpandRow tableData={this.state.patients} />
                 </div>
             </div>
         );

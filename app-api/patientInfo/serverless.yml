@@ -9,7 +9,7 @@ plugins:
 # Enable auto-packing of external modules
 custom:
   webpack:
-    webpackConfig: ./webpack.config.js
+    webpackConfig: ../webpack.config.js
     includeModules: true
 
 provider:
@@ -94,5 +94,5 @@ functions:
 # Create our resources with separate CloudFormation templates
 resources:
   # API Gateway Errors
-  - ${file(resources/api-gateway-errors.yml)}
+  - ${file(../resources/api-gateway-errors.yml)}
 
